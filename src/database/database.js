@@ -1,21 +1,29 @@
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
 
+dotenv.config();
 
-// Função de conexão com o banco de dados
-let db;
-export async function connectDataBase(dataBaseConfig) {
-  const mongoClient = new MongoClient(process.env.MONGO_URI);
-  try {
-    await mongoClient.connect();
-    db = mongoClient.db();
-  } catch (err) {
-    throw err;
-  }
+const connectionString = process.env.MONGO_URI;
+
+const mongoClient = new MongoClient(connectionString);
+
+try {
+  await mongoClient.connect();
+
+  console.log(`Database connection established successfully`);
+} catch (err) {
+  throw err;
 }
 
+const db = mongoClient.db();
+const usersCollection = db.collection("users");
+const productsCollection = db.collection("products");
+const ordersCollection = db.collection("orders");
+const paymentsCollection = db.collection("payments");
 
-// Essa função retorna o db para acesso as funções de acesso ao Mongo db
-// é só importar essa função e dar um:  const db = getDataBase();
-export function getDataBase() {
-  return db;
-}
+export default {
+  usersCollection,
+  productsCollection,
+  ordersCollection,
+  paymentsCollection,
+};
