@@ -4,15 +4,12 @@ import {v4 as uuid} from "uuid"
 
 export default class AuthControllers {
   async signUp(req, res) {
-    const {name, email, password} = req.body
+    
+    const user = req.body
+    const hashPassword = bcrypt.hashSync(password, 10)
     
     try {
-
-      const user = await usersCollection.findOne({ email })
-      if (user) return res.status(509).send("Email já cadastrado")
-
-      const hashPassword = bcrypt.hashSync(password, 10)
-      await usersCollection.insertOne({name, email, password: hashPassword})
+      await usersCollection.insertOne({...user, password: hashPassword})
 
       res.sendStatus(201)
     } catch (error) {
@@ -22,13 +19,9 @@ export default class AuthControllers {
   }
 
   async signIn(req, res) {
-    const { email, password } = req.body
+    
+    const user = res.locals.user;
     try {
-      const user = await usersCollection.findOne({ email })
-      if(!user) return res.status(404).send("Email not registered")
-
-      const comparePassword = bcrypt.compareSync(password, user.password)
-      if (!comparePassword) return res.status(401).send("Password incorrect")
 
       const token = uuid()
       await sessionCollection.insertOne({ userId: user._id, token})

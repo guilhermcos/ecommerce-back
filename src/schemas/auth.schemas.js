@@ -1,12 +1,17 @@
-import joi from "joi"
+import Joi from "joi";
 
-export const signUpSchema = joi.object({
-  name: joi.string().required(),
-  email: joi.string().email().required(),
-  password: joi.string().min(4).required()
-})
+//Objeto que contém os schemas prontos referentes a Auth
+const authSchemas = {
+  schemaSignUp: Joi.object({
+    name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(4).required()
+  }),
 
-export const signInSchema = joi.object({
-  email: joi.string().email().required(),
-  password: joi.string().min(3).required()
+  schemaSignIn: Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(3).required()
 })
+};
+
+export default authSchemas;
