@@ -20,10 +20,12 @@ const usersCollection = db.collection("users");
 const productsCollection = db.collection("products");
 const ordersCollection = db.collection("orders");
 const paymentsCollection = db.collection("payments");
+const sessionCollection = db.collection("psession");
 
 export default {
   usersCollection,
   productsCollection,
   ordersCollection,
   paymentsCollection,
+  sessionCollection
 };
