@@ -23,7 +23,7 @@ const productDocument = {
     "https://hering.vtexassets.com/arquivos/ids/172442/0201-MD307S-C3.jpg?v=638181134347030000",
     "https://hering.vtexassets.com/arquivos/ids/172443/0201-MD307S-C4.jpg?v=638181134362470000",
   ],
-  sizes: [
+  skus: [
     {
       _id: new ObjectId(),
       size: "S",
@@ -48,15 +48,15 @@ const userDocument = {
   hashedPassword: "098u340ajfasdjf",
   mainAddress: {
     street: "",
-    number: "4",
-    neighborhood: "Moema",
-    city: "sao paulo",
-    state: "SC",
-    postalCode: "0878058",
+    number: "",
+    neighborhood: "",
+    city: "",
+    state: "",
+    postalCode: "",
   },
   cart: [
-    { productId: "63d2dd46e77e22e91a55ed48", quantity: 1 },
     { productId: "63d2dd46e77e22e91a55ed48", quantity: 2 },
+    { productId: "63d2dd46e77e22e91a55ed49", quantity: 10 }
   ],
 };
 
@@ -108,12 +108,17 @@ async function createProduct(req, res) {
 
 async function createUser(req, res) {
   try {
-    await getDataBase().collection("users").insertOne(userDocument);
+    await db.usersCollection.insertOne(userDocument);
 
-    return res.sendStatus(212);
+    return res.status(200).send("user created");
   } catch (error) {
     console.log(error);
   }
 }
 
 export default { createProduct, createUser };
+
+
+// db.products.aggregate([{ $match: { "sizes._id": ObjectId("644acd51581b5a8db9e9670a") } }, { $project: { _id: 0, size: { $arrayElemAt: ["$sizes", 0] } } }]).next().size
+// RETORNA ISSO: 
+// { _id: ObjectId("644acd51581b5a8db9e9670a"), size: 'S', stock: 7 }

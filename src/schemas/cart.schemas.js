@@ -1,6 +1,6 @@
 import joi from "joi";
 
-const objectId = joi.object({
+const productId = joi.object({
   productId: joi
     .string()
     .alphanum()
@@ -9,4 +9,8 @@ const objectId = joi.object({
     .required(),
 });
 
-export default { objectId }
+const updateCart = joi.object({
+  updateCart: joi.string().valid("increase", "decrease").required(),
+});
+
+export default { productId, updateCart };

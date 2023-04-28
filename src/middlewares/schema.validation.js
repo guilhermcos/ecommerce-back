@@ -1,12 +1,23 @@
-//Função padrão que valida o schema ou retorna 422 caso algo errado
-
-export default function schemaValidate(schema) {
-  return async (req, res, next) => {
-    try {
-      await schema.validateAsync(req.body);
+export function validateSchemaBody(schema) {
+  return (req, res, next) => {
+      const { error } = schema.validate(req.body, {abortEarly: false});
+      
+      if (error) {
+          const errorMessage = error.details.map((err) => err.message);
+          return res.status(422).send(errorMessage);
+      }
       next();
-    } catch (err) {
-      return res.status(422).send(err.message);
-    }
+  };
+}
+
+export function validateSchemaParams(schema) {
+  return (req, res, next) => {
+      const { error } = schema.validate(req.params, {abortEarly: false});
+      
+      if (error) {
+          const errorMessage = error.details.map((err) => err.message);
+          return res.status(422).send(errorMessage);
+      }
+      next();
   };
 }
