@@ -9,19 +9,19 @@ function randomNumber() {
 // Output the random number to the console
 
 const productDocument = {
-  title: "Short Sleeve T-Shirt",
-  gender: "Men",
-  mainCategory: "Clothes",
-  subCategory: "T-shirt",
-  color: "Grey", // CHANGE
+  title: "Seamless Bikini Panty",
+  gender: "Women",
+  mainCategory: "Intimates",
+  subCategory: "Bikini",
+  color: "Beige", // CHANGE
   brand: "Hering",
-  price: { cents: 7900, currency: "USD", discount: 0 }, //CHANGE
-  description: "A comfortable and stylish slim t-shirt.",
+  price: { cents: 2900, currency: "USD", discount: 0 }, //CHANGE
+  description: "Seamless Bikini Panty. Developed in polyamide with elastane that provides comfort and durability. Features a classic bikini cut with intermediate width on the sides and seamless design, not leaving marks under clothing. In the rush of daily life, it's necessary to have an intimate piece that not only provides comfort, but also allows for more security and freedom of movement, and this piece is ideal!",
   thumbnail:
-    "https://hering.vtexassets.com/arquivos/ids/172440/0201-MD307S-C1.jpg?v=638181134312570000", //CHANGE
+    "https://hering.vtexassets.com/arquivos/ids/500704/KGDD-1CSN-C1.jpg?v=638182337007530000", //CHANGE
   images: [
-    "https://hering.vtexassets.com/arquivos/ids/172442/0201-MD307S-C3.jpg?v=638181134347030000",
-    "https://hering.vtexassets.com/arquivos/ids/172443/0201-MD307S-C4.jpg?v=638181134362470000",
+    "https://hering.vtexassets.com/arquivos/ids/500705/KGDD-1CSN-C2.jpg?v=638182337029130000",
+    "https://hering.vtexassets.com/arquivos/ids/500706/KGDD-1CSN-C3.jpg?v=638182337049100000",
   ],
   skus: [
     {
