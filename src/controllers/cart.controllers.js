@@ -21,6 +21,8 @@ async function insert(req, res) {
       }
     );
 
+    console.log(title)
+
     const [sku] = skus;
 
     if (!updateCart || updateCart === "increase") {

@@ -88,6 +88,7 @@ const paymentDocument = {
   status: "Verified",
   card: {
     type: "visa",
+    holderName: "Ricardo", 
     hashedNumber: "982093458230945820934",
     lastFourNumbers: "9345",
     expiryMonth: "12",
