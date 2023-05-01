@@ -28,4 +28,5 @@ export default {
   productsCollection,
   ordersCollection,
   paymentsCollection,
+  sessionCollection
 };

@@ -3,7 +3,7 @@ import createDB from "../database/createDB.js";
 
 const createRoute = Router()
 
-createRoute.post("/product", createDB.createProduct)
-createRoute.post("/user", createDB.createUser)
+createRoute.post("/createproduct", createDB.createProduct)
+createRoute.post("/createuser", createDB.createUser)
 
 export default createRoute

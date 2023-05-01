@@ -1,7 +1,11 @@
 import { Router } from "express";
+import cartControllers from "../controllers/cart.controllers.js"
+import { validateSchemaParams, validateSchemaQuery } from "../middlewares/schema.validation.js";
+import cartSchemas from "../schemas/cart.schemas.js"
 
-const createRoute = Router()
+const cartRoutes = Router()
 
-createRoute.post("/cart/:productId", cartController.insert)
+cartRoutes.post("/cart/:productId", validateSchemaParams(cartSchemas.productId), validateSchemaQuery(cartSchemas.updateCart) ,cartControllers.insert)
+cartRoutes.get("/cart", cartControllers.get)
 
-export default createRoute
+export default cartRoutes
