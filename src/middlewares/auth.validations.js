@@ -1,38 +1,33 @@
-// Funções de validação referente a Auth
-
-
+import database from "../database/database.js";
+const { usersCollection } = database;
+import bcrypt from "bcrypt";
 
 export default class AuthValidations {
   async validateSignUp(req, res, next) {
-
-    const { email } = req.body
+    const { email } = req.body;
     try {
-       const usuario= await usersCollection.findOne({ email })
-      if(usuario) return res.status(409).send("Email já cadastrado")
-
+      const user = await usersCollection.findOne({ email });
+      if (user) return res.status(409).send("E-mail already registered.");
+      next();
     } catch (error) {
-      
+      res.sendStatus(500);
     }
-    next();
-
   }
 
   async validateSignIn(req, res, next) {
-    const { email, password } = req.body
+    const { email, password } = req.body;
 
     try {
+      const user = await usersCollection.findOne({ email });
+      if (!user) return res.status(404).send("E-mail not registered");
 
-      const user = await usersCollection.findOne({ email })
-      if(!user) return res.status(404).send("Email not registered")
+      const comparePassword = bcrypt.compareSync(password, user.hashedPassword);
+      if (!comparePassword) return res.status(401).send("Password incorrect");
 
-      const comparePassword = bcrypt.compareSync(password, user.password)
-      if (!comparePassword) return res.status(401).send("Password incorrect")
-      
       res.locals.user = user;
-    } catch (error) {
-      return res.sendStatus(500);
+      next();
+    } catch (err) {
+      return res.status(500).send(err.message);
     }
-
-    next();
   }
 }

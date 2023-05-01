@@ -18,13 +18,4 @@ export default class ProductValidations {
       return res.status(422).send(err.message);
     }
   }
-
-  async validateAddToCart(req, res, next) {
-    try {
-      await productSchemas.schemaAddToCart.validateAsync(req.params);
-      next();
-    } catch (err) {
-      return res.status(422).send(err.message);
-    }
-  }
 }
