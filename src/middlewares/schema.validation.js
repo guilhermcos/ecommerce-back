@@ -21,3 +21,15 @@ export function validateSchemaParams(schema) {
       next();
   };
 }
+
+export function validateSchemaQuery(schema) {
+  return (req, res, next) => {
+      const { error } = schema.validate(req.query, {abortEarly: false});
+      
+      if (error) {
+          const errorMessage = error.details.map((err) => err.message);
+          return res.status(422).send(errorMessage);
+      }
+      next();
+  };
+}

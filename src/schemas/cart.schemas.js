@@ -10,7 +10,7 @@ const productId = joi.object({
 });
 
 const updateCart = joi.object({
-  updateCart: joi.string().valid("increase", "decrease").required(),
+  updateCart: joi.string().valid("increase", "decrease").optional(),
 });
 
 export default { productId, updateCart };

@@ -96,6 +96,16 @@ const paymentDocument = {
   }
 }
 
+
+const userCart = [{
+  productId: 1,
+  title: 'Short Sleeve T-Shirt',
+  color: 'Black',
+  price: { cents: 6900, currency: 'USD', discount: 15 },
+  quantity: 3,
+  size: "L"
+}]
+
 async function createProduct(req, res) {
   try {
     await db.productsCollection.insertOne(productDocument);
