@@ -1,4 +1,4 @@
-import { usersCollection, sessionCollection }  from "../database/database"
+import db  from "../database/database.js"
 import bcrypt from "bcrypt"
 import {v4 as uuid} from "uuid"
 
@@ -9,7 +9,7 @@ export default class AuthControllers {
     const hashPassword = bcrypt.hashSync(password, 10)
     
     try {
-      await usersCollection.insertOne({...user, password: hashPassword})
+      await db.usersCollection.insertOne({...user, password: hashPassword})
 
       res.sendStatus(201)
     } catch (error) {
@@ -24,7 +24,7 @@ export default class AuthControllers {
     try {
 
       const token = uuid()
-      await sessionCollection.insertOne({ userId: user._id, token})
+      await db.sessionCollection.insertOne({ userId: user._id, token})
 
       res.status(201).send({ token })
     } catch (error) {
