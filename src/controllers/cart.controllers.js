@@ -5,9 +5,9 @@ async function insert(req, res) {
   const { productId } = req.params;
   const { updateCart } = req.query;
 
-  const TEMPORARY_USER_ID = new ObjectId("644ac67cdb3a65eb2c976212");
+  const userId = res.locals.userId
 
-  const userFilter = { _id: TEMPORARY_USER_ID };
+  const userFilter = { _id: userId };
 
   const objectId = new ObjectId(productId);
 
@@ -37,7 +37,7 @@ async function insert(req, res) {
 
       const { value: productAlreadyInCart } =
         await db.usersCollection.findOneAndUpdate(
-          { _id: TEMPORARY_USER_ID, "cart.productId": objectId },
+          { _id: userId, "cart.productId": objectId },
           { $inc: { "cart.$.quantity": 1 } },
           { returnDocument: "after", projection: { hashedPassword: 0 } }
         );
@@ -72,7 +72,7 @@ async function insert(req, res) {
 
     if (updateCart === "decrease") {
       const { value } = await db.usersCollection.findOneAndUpdate(
-        { _id: TEMPORARY_USER_ID, "cart.productId": objectId },
+        { _id: userId, "cart.productId": objectId },
         { $inc: { "cart.$.quantity": -1 } },
         { returnDocument: "after" }
       );
@@ -109,8 +109,8 @@ async function insert(req, res) {
 // BREAK
 
 async function get(req, res) {
-  const TEMPORARY_USER_ID = new ObjectId("644ac67cdb3a65eb2c976212");
-  const userFilter = { _id: TEMPORARY_USER_ID };
+  const userId = res.locals.userId
+  const userFilter = { _id: userId };
 
   try {
     const { cart } = await db.usersCollection.findOne(userFilter, {projection: {hashedPassword: 0}} );

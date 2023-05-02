@@ -1,11 +1,10 @@
 import db from "../database/database.js";
-import { ObjectId } from "mongodb";
 import bcrypt from "bcrypt";
 
 async function createAddress(req, res) {
-  const TEMPORARY_USER_ID = new ObjectId("644ac67cdb3a65eb2c976212");
+  const userId = res.locals.userId
 
-  const userFilter = { _id: TEMPORARY_USER_ID };
+  const userFilter = { _id: userId };
 
   const address = req.body;
 
@@ -23,9 +22,7 @@ async function createAddress(req, res) {
 }
 
 async function createPayment(req, res) {
-  const TEMPORARY_USER_ID = new ObjectId("644ac67cdb3a65eb2c976212");
-
-  const userFilter = { _id: TEMPORARY_USER_ID };
+  const userId = res.locals.userId
 
   const { type, holderName, number, expiryMonth, expiryYear, cvv } = req.body;
 
@@ -35,7 +32,7 @@ async function createPayment(req, res) {
 
   try {
     const paymentMethod = {
-      userId: TEMPORARY_USER_ID,
+      userId: userId,
       method: "Credit",
       status: "Verified",
       card: {
@@ -58,9 +55,9 @@ async function createPayment(req, res) {
 }
 
 async function get(req, res) {
-  const TEMPORARY_USER_ID = new ObjectId("644ac67cdb3a65eb2c976212");
+  const userId = res.locals.userId
 
-  const userFilter = { _id: TEMPORARY_USER_ID };
+  const userFilter = { _id: userId };
 
   try {
     const checkoutData = await db.usersCollection
@@ -78,7 +75,9 @@ async function get(req, res) {
       ])
       .toArray();
 
-    res.status(200).send(checkoutData);
+      const [checkout] = checkoutData
+
+    res.status(200).send(checkout);
   } catch (err) {
     console.log(err);
   }

@@ -1,13 +1,12 @@
 import db from "../database/database.js";
-import { ObjectId } from "mongodb";
 
 async function create(req, res) {
-    const TEMPORARY_USER_ID = new ObjectId("644ac67cdb3a65eb2c976212");
+  const userId = res.locals.userId;
 
-    const userFilter = { _id: TEMPORARY_USER_ID };
+  const userFilter = { _id: userId };
 
-    try {
-        const [orderData] = await db.usersCollection
+  try {
+    const [orderData] = await db.usersCollection
       .aggregate([
         { $match: userFilter },
         {
@@ -18,44 +17,43 @@ async function create(req, res) {
             as: "paymentMethod",
           },
         },
-        { $project: { "hashedPassword": 0, "paymentMethod.card.hashNumber": 0 } },
+        { $project: { hashedPassword: 0, "paymentMethod.card.hashNumber": 0 } },
       ])
       .toArray();
 
-      const totalPricePerSku = orderData.cart.map((sku) => ({
-        price: sku.price.cents,
-        discount: (1 - (sku.price.discount / 100)),
-        quantity: sku.quantity,
-        totalPricePerSku: ((sku.price.cents * (1 - (sku.price.discount / 100))) * sku.quantity)
-      }))
+    const totalPricePerSku = orderData.cart.map((sku) => ({
+      price: sku.price.cents,
+      discount: 1 - sku.price.discount / 100,
+      quantity: sku.quantity,
+      totalPricePerSku:
+        sku.price.cents * (1 - sku.price.discount / 100) * sku.quantity,
+    }));
 
-      console.log(orderData.paymentMethod)
+    const totalPrice = totalPricePerSku.reduce((acc, curr) => {
+      return acc + curr.totalPricePerSku;
+    }, 0);
 
-      const totalPrice = totalPricePerSku.reduce((acc, curr) => {
-        return acc + curr.totalPricePerSku
-      }, 0)
+    const paymentMethod = orderData.paymentMethod.map((payment) => {
+      const { userId, ...rest } = payment;
+      return rest;
+    });
 
-      const paymentMethod = orderData.paymentMethod.map((payment) => {
-        const {userId, ...rest} = payment
-        return rest
-    })
+    const order = {
+      userId: orderData._id,
+      paymentStatus: "processed",
+      totalPrice: { cents: totalPrice, currency: "USD" },
+      paymentMethod,
+      shippingAddress: orderData.mainAddress,
+      items: orderData.cart,
+    };
 
-      const order = {
-        userId: orderData._id,
-        paymentStatus: "processed",
-        totalPrice: {cents: totalPrice, currency: "USD"},
-        paymentMethod,
-        shippingAddress: orderData.mainAddress,
-        items: orderData.cart
-      }
+    await db.ordersCollection.insertOne(order);
+    await db.usersCollection.updateOne(userFilter, { $set: { cart: [] } });
 
-      await db.ordersCollection.insertOne(order)
-      await db.usersCollection.updateOne(userFilter, {$set: {cart: []}})
-
-      res.status(200).send(order)
-    } catch (err) {
-        
-    }
+    res.status(200).send(order);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-export default { create }
+export default { create };

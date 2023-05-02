@@ -12,14 +12,7 @@ export default class AuthControllers {
       name: user.name,
       email: user.email,
       hashedPassword: hashedPassword,
-      mainAddress: {
-        street: "",
-        number: "",
-        neighborhood: "",
-        city: "",
-        state: "",
-        postalCode: "",
-      },
+      mainAddress: {},
       cart: [],
     };
 
