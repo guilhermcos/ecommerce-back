@@ -10,13 +10,11 @@ const productRouter = Router();
 
 productRouter.get(
   "/product/catalog/:gender/:category",
-  tokenValidation,
   productValidations.validateGetCatalog,
   productControllers.getCatalog
 );
 productRouter.get(
   "/product/details/:id",
-  tokenValidation,
   productValidations.validateGetProduct,
   productControllers.getProduct
 );
