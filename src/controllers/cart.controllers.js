@@ -14,14 +14,12 @@ async function insert(req, res) {
   const productFilter = { "skus._id": objectId };
 
   try {
-    const { title, color, price, skus } = await db.productsCollection.findOne(
+    const { title, color, price, thumbnail, skus } = await db.productsCollection.findOne(
       productFilter,
       {
-        projection: { title: 1, color: 1, price: 1, "skus.$": 1, _id: 0 },
+        projection: { title: 1, color: 1, price: 1, thumbnail: 1, "skus.$": 1, _id: 0 },
       }
     );
-
-    console.log(title)
 
     const [sku] = skus;
 
@@ -52,6 +50,7 @@ async function insert(req, res) {
           price,
           size: sku.size,
           quantity: 1,
+          thumbnail,
         };
 
         const { value: addProductCart } =
@@ -99,9 +98,9 @@ async function insert(req, res) {
 
         return res.status(200).send("The product was removed from the cart.");
       }
+      return res.status(200).send(cart);
     }
-
-    return res.status(200).send("WAIT");
+    
   } catch (err) {
     console.log(err);
   }

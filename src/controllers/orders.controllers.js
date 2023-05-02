@@ -35,8 +35,6 @@ async function create(req, res) {
         return acc + curr.totalPricePerSku
       }, 0)
 
-      console.log(totalPrice)
-
       const paymentMethod = orderData.paymentMethod.map((payment) => {
         const {userId, ...rest} = payment
         return rest

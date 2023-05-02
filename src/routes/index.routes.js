@@ -4,7 +4,7 @@ import createRoute from "./CREATEDB.routes.js";
 import productRouter from "./product.routes.js";
 import cartRoutes from "./cart.routes.js";
 import checkoutRoutes from "./checkout.routes.js";
-import ordersRoutes from "./orders.routes.js";
+import ordersRoutes from "./order.routes.js";
 
 const router = Router();
 
