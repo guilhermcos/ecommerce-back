@@ -23,10 +23,9 @@ const paymentsCollection = db.collection("payments");
 const sessionsCollection = db.collection("sessions");
 
 export default {
-  sessionsCollection,
   usersCollection,
   productsCollection,
   ordersCollection,
   paymentsCollection,
-  sessionsCollection
+  sessionsCollection,
 };

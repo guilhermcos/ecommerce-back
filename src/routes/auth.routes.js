@@ -2,7 +2,7 @@ import { Router } from "express";
 import authSchemas from "../schemas/auth.schemas.js"; //importação de objeto que vai conter schemas de auth
 import AuthValidations from "../middlewares/auth.validations.js";
 import AuthControllers from "../controllers/auth.controllers.js";
-import { validateSchemaBody } from "../middlewares/schema.validation.js"
+import { validateSchemaBody } from "../middlewares/schema.validation.js";
 
 const authValidations = new AuthValidations(); // Padrão para importar e usar as funções
 const authControllers = new AuthControllers(); // Padrão para importar e usar funções
@@ -10,10 +10,16 @@ const authControllers = new AuthControllers(); // Padrão para importar e usar f
 const authRouter = Router();
 
 authRouter.post(
-  "/auth/signUp", // rota
-  // schemaValidateBody(authSchemas.schemaSignUp), //validação do schema, passa o schema como parametro
-  authValidations.validateSignUp, //validação "regras de negócio"...
-  authControllers.signUp //função para fazer o que tem q ser feito
+  "/auth/sign-up",
+  validateSchemaBody(authSchemas.schemaSignUp),
+  authValidations.validateSignUp,
+  authControllers.signUp
+);
+authRouter.post(
+  "/auth/sign-in",
+  validateSchemaBody(authSchemas.schemaSignIn),
+  authValidations.validateSignIn,
+  authControllers.signIn
 );
 
 // exportando para unir todas no index.routes.js

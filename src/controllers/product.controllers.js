@@ -38,23 +38,4 @@ export default class ProductControllers {
       res.status(500).send(err.message);
     }
   }
-
-  async addToCart(req, res) {
-    try {
-      const { id } = req.body;
-      const session = await sessionsCollection.findOne({
-        token: req.headers.tokens,
-      });
-      const userId = session.userId;
-      const user = await usersCollection.findOne({ _id: userId });
-      if (user.cart.some((each) => each.productId === id)) {
-        return res.status(200).send("product already registered in the cart");
-      }
-      user.cart.push({ productId: id, quantity: 1 });
-      await usersCollection.updateOne({ _id: userId }, { $set: user });
-      res.status(201).send("product added to the cart");
-    } catch (err) {
-      res.status(500).send(err.message);
-    }
-  }
 }
